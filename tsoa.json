@@ -1,0 +1,37 @@
+{
+  "entryFile": "src/app.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/controllers/**/*.ts"],
+  "spec": {
+    "outputDirectory": "src",
+    "specVersion": 3,
+    "name": "API TypeScript Infnet",
+    "description": "API para gerenciamento de usuários, cursos e matrículas.",
+    "version": "1.0.0",
+    "securityDefinitions": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      },
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Insira o token JWT no formato: Bearer {token}"
+      },
+      "routes": {
+        "authenticationModule": "./src/authentication.ts"
+      }
+    },
+    "host": "localhost:3000",
+    "schemes": ["http"]
+  },
+  "routes": {
+    "routesDir": "src/routes",
+    "routesFileName": "tsoa.routes.ts",
+    "middleware": "express",
+    "esm": true,
+    "iocModule": "src/config/dependencies"
+  }
+}

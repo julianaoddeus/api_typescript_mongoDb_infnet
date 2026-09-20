@@ -1,74 +1,36 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-import type { User } from "../models/users.model.js";
-import { databasePath } from "../config/database.js";
+import { UserInput, UserModel, type IUser } from "../models/users.model.js";
 
-const filePath = path.join(databasePath, "users.json");
+import FilterQuery from "mongoose";
 
 export class UserRepository {
-  async findAll(): Promise<User[]> {
-    const users = await fs.readFile(filePath, "utf-8");
-
-    return JSON.parse(users);
+  public async findAll(): Promise<IUser[]> {
+    return await UserModel.find();
   }
 
-  async findOne(userId: string): Promise<User> {
-    const users = await this.findAll();
-
-    const user = users.find((user: User) => user.id === userId);
-    if (!user) throw { status: 404, message: "Usuário não encontrado." };
-
-    return user;
+  public async findOne(userId: string): Promise<IUser | null> {
+    return await UserModel.findById(userId);
   }
 
-  async findByEmailOrUsername(identifier: string) {
-    const users = await this.findAll();
+  public async findByEmailOrUsername(identifier: string) {
+    const normalizeIdentifier = identifier.trim().toLowerCase();
 
-    return users.find(
-      (user: User) =>
-        user.email === identifier ||
-        user.username?.trim().toLowerCase() ===
-          identifier?.trim().toLowerCase(),
-    );
+    return UserModel.findOne({
+      $or: [{ email: normalizeIdentifier }, { username: normalizeIdentifier }],
+    });
   }
 
-  async create(user: User): Promise<User> {
-    const users = await this.findAll();
-
-    users.push(user);
-
-    await fs.writeFile(filePath, JSON.stringify(users, null, 2), "utf-8");
-
-    return user;
+  public async create(user: UserInput): Promise<IUser> {
+    const newUser = new UserModel(user);
+    return newUser.save();
   }
 
-  async update(userId: string, data: Partial<User>): Promise<User> {
-    const users = await this.findAll();
-
-    const index = users.findIndex((user: any) => user.id === userId);
-
-    const user = users[index];
-    if (!user) throw { status: 404, message: "Usuário não encontrado." };
-
-    users[index] = {
-      ...user,
-      ...data,
-    };
-
-    await fs.writeFile(filePath, JSON.stringify(users, null, 2), "utf-8");
-
-    return users[index];
+  public async update(userId: string, data: UserInput): Promise<IUser | null> {
+    return await UserModel.findByIdAndUpdate(userId, data, {
+      new: true,
+    });
   }
 
-  async delete(userId: string) {
-    const users = await this.findAll();
-
-    const filteredUsers = users.filter((user: any) => user.id !== userId);
-
-    await fs.writeFile(
-      filePath,
-      JSON.stringify(filteredUsers, null, 2),
-      "utf-8",
-    );
+  public async delete(userId: string) {
+    return UserModel.findByIdAndDelete(userId);
   }
 }

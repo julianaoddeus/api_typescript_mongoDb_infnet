@@ -1,77 +1,37 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-import type { Enrollment } from "../models/enrollment.model.js";
-import { databasePath } from "../config/database.js";
-
-const filePath = path.resolve(databasePath, "enrollments.json");
+import {
+  EnrollmentInput,
+  EnrollmentModel,
+  type IEnrollment,
+} from "../models/enrollment.model.js";
 
 export class EnrollmentRepository {
-  async findAll(): Promise<Enrollment[]> {
-    const enrollments = await fs.readFile(filePath, "utf-8");
-
-    return JSON.parse(enrollments);
+  public async findAll(): Promise<IEnrollment[]> {
+    return await EnrollmentModel.find();
   }
 
-  async findOne(enrollmentId: string): Promise<Enrollment> {
-    const enrollments = await this.findAll();
-
-    const enrollment = enrollments.find(
-      (enrollment: Enrollment) => enrollment.id === enrollmentId,
-    );
-    if (!enrollment)
-      throw { status: 404, message: "Inscrição não encontrada." };
-
-    return enrollment;
+  public async findOne(enrollmentId: string): Promise<IEnrollment | null> {
+    return await EnrollmentModel.findById(enrollmentId);
   }
 
-  async findByUser(userId: string): Promise<Enrollment[]> {
+  public async findByUser(userId: string): Promise<IEnrollment[]> {
     const enrollments = await this.findAll();
 
-    return enrollments.filter((e: Enrollment) => e.userId === userId);
+    return enrollments.filter((e: IEnrollment) => e.userId === userId);
   }
 
-  async create(enrollment: Enrollment) {
-    const enrollments = await this.findAll();
-
-    enrollments.push(enrollment);
-
-    await fs.writeFile(filePath, JSON.stringify(enrollments, null, 2), "utf-8");
-
-    return enrollment;
+  public async input(enrollment: EnrollmentInput) {
+    return await EnrollmentModel.create(enrollment);
   }
 
-  async update(enrollmentId: string, data: Partial<Enrollment>) {
-    const enrollments = await this.findAll();
-
-    const index = enrollments.findIndex(
-      (enrollment: any) => enrollment.id === enrollmentId,
-    );
-    const enrollment = enrollments[index];
-
-    if (!enrollment)
-      throw { status: 404, message: "Inscrição não encontrada." };
-
-    enrollments[index] = {
-      ...enrollment,
-      ...data,
-    };
-
-    await fs.writeFile(filePath, JSON.stringify(enrollments, null, 2), "utf-8");
-
-    return enrollments[index];
+  public async update(enrollmentId: string, data: EnrollmentInput) {
+    return await EnrollmentModel.findByIdAndUpdate(enrollmentId, data, {
+      new: true,
+    });
   }
 
-  async cancel(enrollmentId: string) {
-    const enrollments = await this.findAll();
-
-    const filteredEnrollments = enrollments.filter(
-      (enrollment: any) => enrollment.id !== enrollmentId,
-    );
-
-    await fs.writeFile(
-      filePath,
-      JSON.stringify(filteredEnrollments, null, 2),
-      "utf-8",
-    );
+  public async cancel(enrollmentId: string, data: Partial<EnrollmentInput>) {
+    return await EnrollmentModel.findByIdAndUpdate(enrollmentId, data, {
+      new: true,
+    });
   }
 }

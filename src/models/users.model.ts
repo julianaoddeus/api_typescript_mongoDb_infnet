@@ -1,11 +1,21 @@
+import mongoose from "mongoose";
 import type { UserRole } from "../enums/user.enum.js";
+import { userSchema } from "../validators/user.validator.js";
 
-export class User {
-  id!: string;
-  username!: string;
-  email!: string;
-  password!: string;
-  role!: UserRole;
+export interface IUser {
+  username: string;
+  email: string;
+  password: string;
+  role: UserRole;
 }
 
-export type CreateUserInput = Omit<User, "id" | "role">;
+export type LoginInput = {
+  identifier: string;
+  password: string;
+};
+
+export type UserInput = Omit<IUser, "role">;
+
+userSchema.index({ username: 1, email: 1 });
+
+export const UserModel = mongoose.model<IUser>("users", userSchema);

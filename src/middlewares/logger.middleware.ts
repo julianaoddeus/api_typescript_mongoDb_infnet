@@ -1,10 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import fs from "node:fs/promises";
-import path from "node:path";
+import { LogModel } from "../models/log.model.js";
 
 export const logger = (req: Request, res: Response, next: NextFunction) => {
-  const filePath = path.resolve("src/database/logger.json");
-
   const start = Date.now();
 
   res.on("finish", async () => {
@@ -18,13 +15,7 @@ export const logger = (req: Request, res: Response, next: NextFunction) => {
     };
 
     try {
-      const file = await fs.readFile(filePath, "utf-8");
-
-      const logs = JSON.parse(file);
-
-      logs.push(log);
-
-      await fs.writeFile(filePath, JSON.stringify(logs, null, 2), "utf-8");
+      await LogModel.create(log);
     } catch (error) {
       console.error("Erro ao registrar log:", error);
     }

@@ -1,44 +1,37 @@
-import type { Course, CreateCourseInput } from "../models/courses.model.js";
+import type { ICourse, CourseInput } from "../models/courses.model.js";
 import type { CourseRepository } from "../repository/course.repository.js";
 
 export class CourseService {
   constructor(private repository: CourseRepository) {}
-
-  async create(course: CreateCourseInput) {
-    const { id, ...safeData } = course as any;
-    const courses = await this.repository.findAll();
-    const courseExists = courses.find((c: any) => c.name === safeData.name);
-
-    if (courseExists) throw { status: 409, message: "Curso já cadastrado." };
-
-    const newCourse = {
-      id: crypto.randomUUID(),
-      ...safeData,
-    };
-
-    return await this.repository.create(newCourse);
-  }
 
   async findAll() {
     return await this.repository.findAll();
   }
 
   async findOne(courseId: string) {
-    return await this.repository.findOne(courseId);
+    const course = await this.repository.findOne(courseId);
+
+    if (!course) throw { status: 404, message: "Curso não encontrado." };
+
+    return course;
   }
 
-  async update(courseId: string, data: Partial<Course>) {
-    const { id, ...safeData } = data as any;
+  async insert(course: CourseInput) {
+    return await this.repository.create(course);
+  }
 
-    const exists = await this.repository.findOne(courseId);
-    if (!exists) throw { status: 404, message: "Curso não encontrado." };
+  async update(courseId: string, data: CourseInput) {
+    const course = await this.repository.update(courseId, data);
 
-    return await this.repository.update(courseId, safeData);
+    if (!course) throw { status: 404, message: "Curso não encontrado." };
+
+    return course;
   }
 
   async delete(courseId: string) {
-    const exists = await this.repository.findOne(courseId);
-    if (!exists) throw { status: 404, message: "Curso não encontrado." };
+    const course = await this.repository.findOne(courseId);
+
+    if (!course) throw { status: 404, message: "Curso não encontrado." };
 
     return await this.repository.delete(courseId);
   }

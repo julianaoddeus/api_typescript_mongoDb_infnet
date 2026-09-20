@@ -1,120 +1,78 @@
-import type { Request, Response } from "express";
 import type { CourseService } from "../services/course.service.js";
-import { courseSchema } from "../validators/course.validator.js";
 import type { EnrollmentService } from "../services/enrollments.service.js";
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Middlewares,
+  Path,
+  Post,
+  Put,
+  Route,
+  Security,
+  SuccessResponse,
+} from "tsoa";
+import { requireAuth } from "../middlewares/require-auth.middleware.js";
+import { requireRole } from "../middlewares/role.middleware.js";
 
-export class CourseController {
+import type { CourseInput, ICourse } from "../models/courses.model.js";
+import { UserRole } from "../enums/user.enum.js";
+@Route("courses")
+@Security("jwt")
+@Middlewares(requireAuth, requireRole(UserRole.ADMIN))
+export class CourseController extends Controller {
   constructor(
     private service: CourseService,
     private enrollmentService: EnrollmentService,
-  ) {}
+  ) {
+    super();
+  }
 
-  create = async (req: Request, res: Response) => {
-    try {
-      const parsed = courseSchema.safeParse(req.body);
+  @SuccessResponse("200", "Ok")
+  @Get()
+  public async getAll() {
+    return await this.service.findAll();
+  }
 
-      if (!parsed.success) {
-        return res
-          .status(400)
-          .json({ errors: parsed.error.flatten().fieldErrors });
-      }
+  @SuccessResponse("200", "Ok")
+  @Get("enrollments/{userId}")
+  public async getCourseWithEnrollment(@Path() userId: string) {
+    const enrollments = await this.enrollmentService.findByUser(userId);
 
-      const course = await this.service.create(parsed.data);
+    const courses = await this.service.findAll();
 
-      return res.status(201).json(course);
-    } catch (err: any) {
-      return res
-        .status(err.status ?? 500)
-        .json({ message: err.message ?? "Erro ao criar curso" });
-    }
-  };
+    const coursesWithEnrollments = enrollments.map((enrollment) => {
+      return courses.find((course) => course.id === enrollment.courseId);
+    });
 
-  findAll = async (req: Request, res: Response) => {
-    try {
-      const courses = await this.service.findAll();
+    return coursesWithEnrollments;
+  }
 
-      return res.status(200).json(courses);
-    } catch (err: any) {
-      return res.status(500).json({ message: "Erro ao buscar cursos" });
-    }
-  };
+  @SuccessResponse("200", "Ok")
+  @Get("{courseId}")
+  public async getOne(@Path() courseId: string) {
+    return await this.service.findOne(courseId);
+  }
 
-  findOne = async (req: Request, res: Response) => {
-    try {
-      const id = req.params?.id as string;
-      const course = await this.service.findOne(id);
+  @SuccessResponse("201", "Created")
+  @Post()
+  public async create(@Body() course: CourseInput): Promise<ICourse> {
+    const newCourse = await this.service.insert(course);
+    this.setStatus(201);
 
-      if (!course)
-        return res.status(404).json({ message: "Curso não encontrado" });
+    return newCourse as ICourse;
+  }
 
-      return res.status(200).json(course);
-    } catch (err: any) {
-      return res.status(500).json({ message: "Erro ao buscar curso" });
-    }
-  };
+  @SuccessResponse("200", "Ok")
+  @Put("{courseId}")
+  public async update(@Path() courseId: string): Promise<ICourse> {
+    return await this.service.findOne(courseId);
+  }
 
-  findCourseWithEnrollment = async (req: Request, res: Response) => {
-    try {
-      const userId = req.params?.userId as string;
-
-      if (!userId)
-        return res.status(400).json({ message: "Usuário não informado" });
-
-      const courses = await this.service.findAll();
-      const enrollments = await this.enrollmentService.findByUser(userId);
-
-      const coursesWithEnrollments = enrollments.map((enrollment) => {
-        const course = courses.find(
-          (course) => course.id === enrollment.courseId,
-        );
-
-        if (!course) return null;
-
-        return {
-          ...course,
-          status: enrollment.status,
-          enrolledAt: enrollment.enrolledAt,
-          canceledAt: enrollment.canceledAt,
-        };
-      });
-
-      return res.status(200).json(coursesWithEnrollments);
-    } catch (err: any) {
-      return res.status(500).json({ message: "Erro ao buscar cursos" });
-    }
-  };
-
-  update = async (req: Request, res: Response) => {
-    try {
-      const parsed = courseSchema.safeParse(req.body);
-
-      if (!parsed.success) {
-        return res
-          .status(400)
-          .json({ errors: parsed.error.flatten().fieldErrors });
-      }
-
-      const id = req.params?.id as string;
-      const { status, ...data } = parsed.data;
-
-      const course = await this.service.update(id, data);
-      return res.status(200).json(course);
-    } catch (err: any) {
-      return res
-        .status(err.status ?? 500)
-        .json({ message: err.message ?? "Erro ao atualizar curso" });
-    }
-  };
-
-  delete = async (req: Request, res: Response) => {
-    try {
-      const id = req.params?.id as string;
-      await this.service.delete(id);
-      return res.status(200).json({ message: "Curso cancelado com sucesso!" });
-    } catch (err: any) {
-      return res
-        .status(err.status ?? 500)
-        .json({ message: err.message ?? "Erro ao excluir curso" });
-    }
-  };
+  @SuccessResponse("204", "No Content")
+  @Delete("{courseId}")
+  public async delete(@Path() courseId: string): Promise<void> {
+    await this.service.delete(courseId);
+  }
 }

@@ -18,6 +18,10 @@ npm-debug.log*
 # TypeScript cache
 *.tsbuildinfo
 
+# tsoa generated files
+src/swagger.json
+src/routes/tsoa.routes.ts
+
 # OS
 .DS_Store
 Thumbs.db

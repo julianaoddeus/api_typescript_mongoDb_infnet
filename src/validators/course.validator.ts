@@ -1,34 +1,34 @@
-import z from "zod";
-import { EnrollmentEnum } from "../enums/enrollment.enum.js";
+import { Schema } from "mongoose";
+import { ICourse } from "../models/courses.model.js";
 
-
-export const courseSchema = z.object({
-  name: z
-    .string({
-      error: "Nome do curso é obrigatório.",
-    })
-    .min(5, {
-      error: "Nome deve ter pelo menos 5 caracteres.",
-    }),
-  description: z
-    .string({
-      error: "Descrição do curso é obrigatória.",
-    })
-    .min(10, {
-      error: "Descrição deve ter pelo menos 10 caracteres.",
-    }),
-  startDate: z.coerce.date({
-    error: "Data de inicio do curso é obrigatório.",
-  }),
-  stock: z
-    .number({
-      error: "Quantidade de vagas é obrigatório.",
-    })
-    .min(1, {
-      error: "Quantidade deve ter pelo menos 1.",
-    }),
-  imageURL: z.string({
-    error: "Imagem para capa do curso é obrigatória.",
-  }),
-  status: z.enum(EnrollmentEnum).optional(),
-});
+export const courseSchema = new Schema<ICourse>(
+  {
+    name: {
+      type: String,
+      required: [true, "Nome do curso é obrigatório."],
+      trim: true,
+      minLength: [5, "Nome deve ter pelo menos 5 caracteres."],
+      maxLength: [150, "Nome do curso deve ter no máximo 150 caracteres."],
+    },
+    description: {
+      type: String,
+      required: [true, "Descrição do curso é obrigatória."],
+      trim: true,
+      minLength: [10, "Descrição deve ter pelo menos 10 caracteres."],
+      maxLength: [150, "Descrição do curso deve ter no máximo 150 caracteres."],
+    },
+    stock: {
+      type: Number,
+      required: [true, "Quantidade de vagas é obrigatório."],
+      trim: true,
+      minLength: [1, "Quantidade deve ter pelo menos 1."],
+    },
+    imageURL: {
+      type: String,
+      required: [true, "Imagem para capa do curso é obrigatória."],
+    },
+  },
+  {
+    timestamps: true,
+  },
+);

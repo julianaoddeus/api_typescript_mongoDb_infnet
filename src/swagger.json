@@ -17,9 +17,6 @@
 			},
 			"IUser": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
 					"username": {
 						"type": "string"
 					},
@@ -34,7 +31,6 @@
 					}
 				},
 				"required": [
-					"id",
 					"username",
 					"email",
 					"password",
@@ -43,7 +39,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Pick_IUser.Exclude_keyofIUser.id-or-role__": {
+			"Pick_IUser.Exclude_keyofIUser.role__": {
 				"properties": {
 					"username": {
 						"type": "string"
@@ -63,12 +59,167 @@
 				"type": "object",
 				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
-			"Omit_IUser.id-or-role_": {
-				"$ref": "#/components/schemas/Pick_IUser.Exclude_keyofIUser.id-or-role__",
+			"Omit_IUser.role_": {
+				"$ref": "#/components/schemas/Pick_IUser.Exclude_keyofIUser.role__",
 				"description": "Construct a type with the properties of T except for those in type K."
 			},
-			"CreateUserInput": {
-				"$ref": "#/components/schemas/Omit_IUser.id-or-role_"
+			"UserInput": {
+				"$ref": "#/components/schemas/Omit_IUser.role_"
+			},
+			"EnrollmentEnum": {
+				"enum": [
+					"ATIVO",
+					"CANCELADO"
+				],
+				"type": "string"
+			},
+			"IEnrollment": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "string"
+					},
+					"courseId": {
+						"type": "string"
+					},
+					"status": {
+						"$ref": "#/components/schemas/EnrollmentEnum"
+					},
+					"enrolledAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"canceledAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"userId",
+					"courseId",
+					"status",
+					"enrolledAt",
+					"canceledAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_IEnrollment.Exclude_keyofIEnrollment.id-or-userId-or-courserId-or-enrolledAt__": {
+				"properties": {
+					"courseId": {
+						"type": "string"
+					},
+					"status": {
+						"$ref": "#/components/schemas/EnrollmentEnum"
+					},
+					"canceledAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"courseId",
+					"status",
+					"canceledAt"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_IEnrollment.id-or-userId-or-courserId-or-enrolledAt_": {
+				"$ref": "#/components/schemas/Pick_IEnrollment.Exclude_keyofIEnrollment.id-or-userId-or-courserId-or-enrolledAt__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"EnrollmentInput": {
+				"$ref": "#/components/schemas/Omit_IEnrollment.id-or-userId-or-courserId-or-enrolledAt_"
+			},
+			"ICourse": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"startDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"stock": {
+						"type": "number",
+						"format": "double"
+					},
+					"imageURL": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"name",
+					"description",
+					"startDate",
+					"stock",
+					"imageURL"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Pick_ICourse.Exclude_keyofICourse.id__": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"startDate": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"stock": {
+						"type": "number",
+						"format": "double"
+					},
+					"imageURL": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"description",
+					"startDate",
+					"stock",
+					"imageURL"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
+			},
+			"Omit_ICourse.id_": {
+				"$ref": "#/components/schemas/Pick_ICourse.Exclude_keyofICourse.id__",
+				"description": "Construct a type with the properties of T except for those in type K."
+			},
+			"CourseInput": {
+				"$ref": "#/components/schemas/Omit_ICourse.id_"
+			},
+			"LoginInput": {
+				"properties": {
+					"password": {
+						"type": "string"
+					},
+					"identifier": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"password",
+					"identifier"
+				],
+				"type": "object"
 			}
 		},
 		"securitySchemes": {
@@ -76,6 +227,15 @@
 				"type": "http",
 				"scheme": "bearer",
 				"bearerFormat": "JWT"
+			},
+			"jwt": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT",
+				"description": "Insira o token JWT no formato: Bearer {token}"
+			},
+			"routes": {
+				"authenticationModule": "./src/authentication.ts"
 			}
 		}
 	},
@@ -90,6 +250,30 @@
 	},
 	"paths": {
 		"/users": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IUser"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			},
 			"post": {
 				"operationId": "Create",
 				"responses": {
@@ -98,7 +282,12 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IUser"
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IUser"
+										}
+									],
+									"nullable": true
 								}
 							}
 						}
@@ -111,7 +300,403 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateUserInput"
+								"$ref": "#/components/schemas/UserInput"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/{userId}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IUser"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/enrollments": {
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"201": {
+						"description": "Criar matrícula",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IEnrollment"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/EnrollmentInput"
+							}
+						}
+					}
+				}
+			},
+			"patch": {
+				"operationId": "Cancel",
+				"responses": {
+					"200": {
+						"description": "Cancelar matrícula",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/IEnrollment"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "string"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/courses": {
+			"get": {
+				"operationId": "GetAll",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ICourse"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "Create",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ICourse"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CourseInput"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/courses/enrollments/{userId}": {
+			"get": {
+				"operationId": "GetCourseWithEnrollment",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ICourse"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/courses/{courseId}": {
+			"get": {
+				"operationId": "GetOne",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ICourse"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "courseId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"put": {
+				"operationId": "Update",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ICourse"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "courseId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "Delete",
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				},
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "courseId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/auth/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Login realizado com sucesso",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"user": {
+											"properties": {
+												"email": {
+													"type": "string"
+												},
+												"username": {
+													"type": "string"
+												},
+												"id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"email",
+												"username",
+												"id"
+											],
+											"type": "object"
+										},
+										"token": {}
+									},
+									"required": [
+										"user",
+										"token"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LoginInput"
 							}
 						}
 					}
@@ -121,7 +706,7 @@
 	},
 	"servers": [
 		{
-			"url": "https://[object Object]/"
+			"url": "http://localhost:3000/"
 		}
 	]
 }
