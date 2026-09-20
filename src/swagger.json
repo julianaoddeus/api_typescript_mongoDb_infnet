@@ -233,9 +233,6 @@
 				"scheme": "bearer",
 				"bearerFormat": "JWT",
 				"description": "Insira o token JWT no formato: Bearer {token}"
-			},
-			"routes": {
-				"authenticationModule": "./src/authentication.ts"
 			}
 		}
 	},
@@ -357,11 +354,7 @@
 						}
 					}
 				},
-				"security": [
-					{
-						"jwt": []
-					}
-				],
+				"security": [],
 				"parameters": [
 					{
 						"in": "path",
@@ -380,11 +373,7 @@
 						"description": "No Content"
 					}
 				},
-				"security": [
-					{
-						"jwt": []
-					}
-				],
+				"security": [],
 				"parameters": [
 					{
 						"in": "path",

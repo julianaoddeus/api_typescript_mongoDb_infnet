@@ -19,9 +19,6 @@
         "scheme": "bearer",
         "bearerFormat": "JWT",
         "description": "Insira o token JWT no formato: Bearer {token}"
-      },
-      "routes": {
-        "authenticationModule": "./src/authentication.ts"
       }
     },
     "host": "localhost:3000",
@@ -32,6 +29,7 @@
     "routesFileName": "tsoa.routes.ts",
     "middleware": "express",
     "esm": true,
+    "authenticationModule": "src/authentication.ts",
     "iocModule": "src/config/dependencies"
   }
 }

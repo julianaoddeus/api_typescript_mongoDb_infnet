@@ -49,7 +49,6 @@ export class UserController extends Controller {
   }
 
   @SuccessResponse("200", "Ok")
-  @Security("jwt")
   @Middlewares(requireAuth, requireRole(UserRole.ADMIN))
   @Put("{userId}")
   public async update(@Path() userId: string): Promise<IUser | null> {
@@ -57,7 +56,6 @@ export class UserController extends Controller {
   }
 
   @SuccessResponse("204", "No Content")
-  @Security("jwt")
   @Middlewares(requireAuth, requireRole(UserRole.ADMIN))
   @Delete("{userId}")
   public async delete(@Path() userId: string): Promise<void> {

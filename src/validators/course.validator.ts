@@ -20,15 +20,15 @@ export const courseSchema = new Schema<ICourse>(
     stock: {
       type: Number,
       required: [true, "Quantidade de vagas é obrigatório."],
-      trim: true,
-      minLength: [1, "Quantidade deve ter pelo menos 1."],
+      min: [1, "Quantidade deve ter pelo menos 1."],
+    },
+    startDate: {
+      type: Date,
+      required: [true, "Data de início é obrigatória."],
     },
     imageURL: {
       type: String,
       required: [true, "Imagem para capa do curso é obrigatória."],
     },
-  },
-  {
-    timestamps: true,
-  },
+  }
 );
