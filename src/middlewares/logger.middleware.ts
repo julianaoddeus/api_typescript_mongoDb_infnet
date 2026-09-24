@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { LogModel } from "../models/log.model.js";
+import { LogModel } from "../schemas/log.schema.js";
 
 export const logger = (req: Request, res: Response, next: NextFunction) => {
   const start = Date.now();

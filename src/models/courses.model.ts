@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import { courseSchema } from "../validators/course.validator.js";
+import mongoose, { Document } from "mongoose";
+import { courseSchema } from "../schemas/course.schema.js";
 
-export interface ICourse {
+export interface ICourse extends Document {
   id: string;
   name: string;
   description: string;

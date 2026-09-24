@@ -1,7 +1,4 @@
 import { UserInput, UserModel, type IUser } from "../models/users.model.js";
-
-import FilterQuery from "mongoose";
-
 export class UserRepository {
   public async findAll(): Promise<IUser[]> {
     return await UserModel.find();
