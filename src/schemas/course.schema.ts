@@ -32,3 +32,6 @@ export const courseSchema = new Schema<ICourse>(
     },
   }
 );
+
+
+courseSchema.index({ name: 1 });

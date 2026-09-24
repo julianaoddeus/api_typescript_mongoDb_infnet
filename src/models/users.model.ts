@@ -16,6 +16,4 @@ export type LoginInput = {
 
 export type UserInput = Omit<IUser, "role">;
 
-userSchema.index({ username: 1, email: 1 });
-
 export const UserModel = mongoose.model<IUser>("users", userSchema);

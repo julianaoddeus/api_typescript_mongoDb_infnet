@@ -12,6 +12,4 @@ export interface ICourse extends Document {
 
 export type CourseInput = Omit<ICourse, "id">;
 
-courseSchema.index({ name: 1 });
-
 export const CourseModel = mongoose.model<ICourse>("courses", courseSchema);

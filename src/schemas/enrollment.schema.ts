@@ -30,3 +30,5 @@ export const enrollmentSchema = new Schema<IEnrollment>(
     timestamps: true,
   },
 );
+
+enrollmentSchema.index({ username: 1, email: 1 });

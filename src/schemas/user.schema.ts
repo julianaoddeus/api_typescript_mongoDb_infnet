@@ -29,3 +29,5 @@ export const userSchema = new Schema<IUser>({
     required: true,
   },
 });
+
+userSchema.index({ username: 1, email: 1 });

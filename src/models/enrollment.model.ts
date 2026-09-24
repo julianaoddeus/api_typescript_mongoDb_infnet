@@ -16,8 +16,6 @@ export type EnrollmentInput = Omit<
   "id" | "userId" | "courserId" | "enrolledAt"
 >;
 
-enrollmentSchema.index({ username: 1, email: 1 });
-
 export const EnrollmentModel = mongoose.model<IEnrollment>(
   "enrollments",
   enrollmentSchema,
