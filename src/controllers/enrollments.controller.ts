@@ -1,9 +1,11 @@
 import type { EnrollmentService } from "../services/enrollments.service.js";
 import {
   Body,
+  Controller,
   Get,
   Middlewares,
   Patch,
+  Path,
   Post,
   Put,
   Route,
@@ -23,8 +25,10 @@ import {
   requireAuth,
   requireRole(UserRole.ADMIN, UserRole.MODERATOR, UserRole.READER),
 )
-export class EnrollmentController {
-  constructor(private service: EnrollmentService) {}
+export class EnrollmentController extends Controller {
+  constructor(private service: EnrollmentService) {
+    super();
+  }
 
   @SuccessResponse("201", "Criar matrícula")
   @Post()
@@ -35,9 +39,9 @@ export class EnrollmentController {
   }
 
   @SuccessResponse("200", "Cancelar matrícula")
-  @Patch()
+  @Patch("{enrollmentId}")
   public async cancel(
-    @Body() enrollmentId: string,
+    @Path() enrollmentId: string,
   ): Promise<IEnrollment | null> {
     return (await this.service.cancel(enrollmentId)) as unknown as IEnrollment;
   }

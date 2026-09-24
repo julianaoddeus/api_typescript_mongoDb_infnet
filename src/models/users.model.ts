@@ -14,6 +14,10 @@ export type LoginInput = {
   password: string;
 };
 
-export type UserInput = Omit<IUser, "role">;
+export interface UserInput {
+  username: string;
+  email: string;
+  password: string;
+}
 
 export const UserModel = mongoose.model<IUser>("users", userSchema);

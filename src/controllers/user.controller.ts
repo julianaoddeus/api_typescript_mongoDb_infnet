@@ -51,8 +51,11 @@ export class UserController extends Controller {
   @SuccessResponse("200", "Ok")
   @Middlewares(requireAuth, requireRole(UserRole.ADMIN))
   @Put("{userId}")
-  public async update(@Path() userId: string): Promise<IUser | null> {
-    return await this.service.findOne(userId);
+  public async update(
+    @Path() userId: string,
+    @Body() data: UserInput,
+  ): Promise<IUser | null> {
+    return await this.service.update(userId, data);
   }
 
   @SuccessResponse("204", "No Content")

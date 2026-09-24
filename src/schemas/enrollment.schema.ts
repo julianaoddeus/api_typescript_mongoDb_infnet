@@ -1,21 +1,17 @@
 import { Schema } from "mongoose";
 import { IEnrollment } from "../models/enrollment.model.js";
-import { EnrollmentEnum } from "../enums/enrollment.enum.js";
 
 export const enrollmentSchema = new Schema<IEnrollment>(
   {
     userId: {
-      type: String,
+      type: Schema.Types.ObjectId as unknown as StringConstructor,
+      ref: "users",
       required: true,
     },
     courseId: {
-      type: String,
+      type: Schema.Types.ObjectId as unknown as StringConstructor,
+      ref: "courses",
       required: true,
-    },
-    status: {
-      type: String,
-      required: true,
-      enum: Object.values(EnrollmentEnum),
     },
     enrolledAt: {
       type: Date,

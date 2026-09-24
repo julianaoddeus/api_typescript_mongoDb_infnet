@@ -14,9 +14,7 @@ export class EnrollmentRepository {
   }
 
   public async findByUser(userId: string): Promise<IEnrollment[]> {
-    const enrollments = await this.findAll();
-
-    return enrollments.filter((e: IEnrollment) => e.userId === userId);
+     return await EnrollmentModel.find({ userId });
   }
 
   public async input(enrollment: EnrollmentInput) {

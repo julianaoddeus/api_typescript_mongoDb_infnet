@@ -66,8 +66,11 @@ export class CourseController extends Controller {
 
   @SuccessResponse("200", "Ok")
   @Put("{courseId}")
-  public async update(@Path() courseId: string): Promise<ICourse> {
-    return await this.service.findOne(courseId);
+  public async update(
+    @Path() courseId: string,
+    @Body() data: CourseInput,
+  ): Promise<ICourse> {
+    return await this.service.update(courseId, data);
   }
 
   @SuccessResponse("204", "No Content")

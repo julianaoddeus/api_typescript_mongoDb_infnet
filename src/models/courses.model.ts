@@ -10,6 +10,12 @@ export interface ICourse {
   imageURL: string;
 }
 
-export type CourseInput = Omit<ICourse, "id">;
+export interface CourseInput {
+  name: string;
+  description: string;
+  startDate: Date;
+  stock: number;
+  imageURL: string;
+}
 
 export const CourseModel = mongoose.model<ICourse>("courses", courseSchema);

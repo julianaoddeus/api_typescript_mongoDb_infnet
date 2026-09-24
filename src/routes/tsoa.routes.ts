@@ -39,19 +39,14 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_IUser.Exclude_keyofIUser.role__": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"username":{"dataType":"string","required":true},"email":{"dataType":"string","required":true},"password":{"dataType":"string","required":true}},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Omit_IUser.role_": {
-        "dataType": "refAlias",
-        "type": {"ref":"Pick_IUser.Exclude_keyofIUser.role__","validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UserInput": {
-        "dataType": "refAlias",
-        "type": {"ref":"Omit_IUser.role_","validators":{}},
+        "dataType": "refObject",
+        "properties": {
+            "username": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
+            "password": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "EnrollmentEnum": {
@@ -72,19 +67,14 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_IEnrollment.Exclude_keyofIEnrollment.id-or-userId-or-courserId-or-enrolledAt__": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"courseId":{"dataType":"string","required":true},"status":{"ref":"EnrollmentEnum","required":true},"canceledAt":{"dataType":"datetime","required":true}},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Omit_IEnrollment.id-or-userId-or-courserId-or-enrolledAt_": {
-        "dataType": "refAlias",
-        "type": {"ref":"Pick_IEnrollment.Exclude_keyofIEnrollment.id-or-userId-or-courserId-or-enrolledAt__","validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "EnrollmentInput": {
-        "dataType": "refAlias",
-        "type": {"ref":"Omit_IEnrollment.id-or-userId-or-courserId-or-enrolledAt_","validators":{}},
+        "dataType": "refObject",
+        "properties": {
+            "courseId": {"dataType":"string","required":true},
+            "status": {"ref":"EnrollmentEnum","required":true},
+            "canceledAt": {"dataType":"datetime"},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ICourse": {
@@ -100,19 +90,16 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Pick_ICourse.Exclude_keyofICourse.id__": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"name":{"dataType":"string","required":true},"description":{"dataType":"string","required":true},"startDate":{"dataType":"datetime","required":true},"stock":{"dataType":"double","required":true},"imageURL":{"dataType":"string","required":true}},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Omit_ICourse.id_": {
-        "dataType": "refAlias",
-        "type": {"ref":"Pick_ICourse.Exclude_keyofICourse.id__","validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CourseInput": {
-        "dataType": "refAlias",
-        "type": {"ref":"Omit_ICourse.id_","validators":{}},
+        "dataType": "refObject",
+        "properties": {
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "startDate": {"dataType":"datetime","required":true},
+            "stock": {"dataType":"double","required":true},
+            "imageURL": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "LoginInput": {
@@ -245,6 +232,7 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsUserController_update: Record<string, TsoaRoute.ParameterSchema> = {
                 userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
+                data: {"in":"body","name":"data","required":true,"ref":"UserInput"},
         };
         app.put('/users/:userId',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
@@ -350,9 +338,9 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsEnrollmentController_cancel: Record<string, TsoaRoute.ParameterSchema> = {
-                enrollmentId: {"in":"body","name":"enrollmentId","required":true,"dataType":"string"},
+                enrollmentId: {"in":"path","name":"enrollmentId","required":true,"dataType":"string"},
         };
-        app.patch('/enrollments',
+        app.patch('/enrollments/:enrollmentId',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(EnrollmentController)),
             ...(fetchMiddlewares<RequestHandler>(EnrollmentController.prototype.cancel)),
@@ -530,6 +518,7 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsCourseController_update: Record<string, TsoaRoute.ParameterSchema> = {
                 courseId: {"in":"path","name":"courseId","required":true,"dataType":"string"},
+                data: {"in":"body","name":"data","required":true,"ref":"CourseInput"},
         };
         app.put('/courses/:courseId',
             authenticateMiddleware([{"jwt":[]}]),

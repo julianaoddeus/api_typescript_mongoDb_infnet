@@ -11,10 +11,11 @@ export interface IEnrollment {
   canceledAt: Date;
 }
 
-export type EnrollmentInput = Omit<
-  IEnrollment,
-  "id" | "userId" | "courserId" | "enrolledAt"
->;
+export interface EnrollmentInput {
+  courseId: string;
+  status: EnrollmentEnum;
+  canceledAt?: Date;
+}
 
 export const EnrollmentModel = mongoose.model<IEnrollment>(
   "enrollments",
