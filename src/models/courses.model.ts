@@ -1,7 +1,7 @@
 import mongoose, { Document } from "mongoose";
 import { courseSchema } from "../schemas/course.schema.js";
 
-export interface ICourse extends Document {
+export interface ICourse {
   id: string;
   name: string;
   description: string;

@@ -2,7 +2,7 @@ import mongoose, { Document } from "mongoose";
 import type { UserRole } from "../enums/user.enum.js";
 import { userSchema } from "../schemas/user.schema.js";
 
-export interface IUser extends Document {
+export interface IUser  {
   username: string;
   email: string;
   password: string;
