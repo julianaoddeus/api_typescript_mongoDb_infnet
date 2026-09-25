@@ -41,11 +41,8 @@ export class UserController extends Controller {
 
   @SuccessResponse("201", "Created")
   @Post()
-  public async insert(@Body() user: UserInput): Promise<IUser | null> {
-    const newUser = await this.service.insert(user);
-    this.setStatus(201);
-
-    return newUser;
+  public async insert(@Body() user: UserInput): Promise<string> {
+    return await this.service.insert(user);    
   }
 
   @SuccessResponse("200", "Ok")

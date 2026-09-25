@@ -57,11 +57,8 @@ export class CourseController extends Controller {
 
   @SuccessResponse("201", "Created")
   @Post()
-  public async insert(@Body() course: CourseInput): Promise<ICourse> {
-    const newCourse = await this.service.insert(course);
-    this.setStatus(201);
-
-    return newCourse as ICourse;
+  public async insert(@Body() course: CourseInput): Promise<string> {
+    return await this.service.insert(course);
   }
 
   @SuccessResponse("200", "Ok")

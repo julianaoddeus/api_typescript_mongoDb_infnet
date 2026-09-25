@@ -5,26 +5,13 @@ import {
 } from "../models/enrollment.model.js";
 
 export class EnrollmentRepository {
-  public async findAll(): Promise<IEnrollment[]> {
-    return await EnrollmentModel.find();
-  }
-
-  public async findOne(enrollmentId: string): Promise<IEnrollment | null> {
-    return await EnrollmentModel.findById(enrollmentId);
-  }
-
   public async findByUser(userId: string): Promise<IEnrollment[]> {
-     return await EnrollmentModel.find({ userId });
+    return await EnrollmentModel.find({ userId });
   }
 
   public async insert(enrollment: EnrollmentInput) {
-    return await EnrollmentModel.create(enrollment);
-  }
-
-  public async update(enrollmentId: string, data: EnrollmentInput) {
-    return await EnrollmentModel.findByIdAndUpdate(enrollmentId, data, {
-      new: true,
-    });
+    const newEnrollment = new EnrollmentModel(enrollment);
+     newEnrollment.save();
   }
 
   public async cancel(enrollmentId: string, data: Partial<EnrollmentInput>) {

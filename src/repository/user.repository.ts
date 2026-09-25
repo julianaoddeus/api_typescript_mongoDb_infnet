@@ -16,9 +16,10 @@ export class UserRepository {
     });
   }
 
-  public async insert(user: UserInput): Promise<IUser> {
-    const newUser = new UserModel(user);
-    return newUser.save();
+  public async insert(user: UserInput): Promise<string> {
+    let newUser = new UserModel(user);
+    newUser = await newUser.save();
+    return newUser._id.toString();
   }
 
   public async update(userId: string, data: UserInput): Promise<IUser | null> {
