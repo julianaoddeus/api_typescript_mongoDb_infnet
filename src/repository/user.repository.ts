@@ -22,10 +22,10 @@ export class UserRepository {
     return newUser._id.toString();
   }
 
-  public async update(userId: string, data: UserInput): Promise<IUser | null> {
-    return await UserModel.findByIdAndUpdate(userId, data, {
-      new: true,
-    });
+  public async update(userId: string, data: UserInput): Promise<boolean> {
+    const userUpdate = await UserModel.updateOne({ _id: userId }, { data });
+
+    return userUpdate?.modifiedCount > 0;
   }
 
   public async delete(userId: string) {

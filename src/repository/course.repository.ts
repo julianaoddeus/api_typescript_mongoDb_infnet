@@ -1,5 +1,5 @@
+import { Error } from "mongoose";
 import { CourseInput, CourseModel, ICourse } from "../models/courses.model.js";
-
 
 export class CourseRepository {
   public async findAll(): Promise<ICourse[]> {
@@ -16,7 +16,7 @@ export class CourseRepository {
     return newCourse._id.toString();
   }
 
-  async update(courseId: string, data: CourseInput) {
+  async update(courseId: string, data: CourseInput): Promise<ICourse | null> {
     return await CourseModel.findByIdAndUpdate(courseId, data, { new: true });
   }
 

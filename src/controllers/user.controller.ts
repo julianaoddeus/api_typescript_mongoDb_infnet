@@ -42,7 +42,7 @@ export class UserController extends Controller {
   @SuccessResponse("201", "Created")
   @Post()
   public async insert(@Body() user: UserInput): Promise<string> {
-    return await this.service.insert(user);    
+    return await this.service.insert(user);
   }
 
   @SuccessResponse("200", "Ok")
@@ -51,7 +51,7 @@ export class UserController extends Controller {
   public async update(
     @Path() userId: string,
     @Body() data: UserInput,
-  ): Promise<IUser | null> {
+  ): Promise<boolean> {
     return await this.service.update(userId, data);
   }
 

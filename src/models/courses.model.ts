@@ -1,7 +1,7 @@
 import mongoose, { Document } from "mongoose";
 import { courseSchema } from "../schemas/course.schema.js";
 
-export interface ICourse {
+export interface ICourse extends Document{
   id: string;
   name: string;
   description: string;
@@ -10,7 +10,7 @@ export interface ICourse {
   imageURL: string;
 }
 
-export interface CourseInput {
+export interface CourseInput extends Document {
   name: string;
   description: string;
   startDate: Date;

@@ -2,7 +2,7 @@ import mongoose, { Document } from "mongoose";
 import type { EnrollmentEnum } from "../enums/enrollment.enum.js";
 import { enrollmentSchema } from "../schemas/enrollment.schema.js";
 
-export interface IEnrollment {
+export interface IEnrollment extends Document{
   id: string;
   userId: string;
   courseId: string;
@@ -11,7 +11,7 @@ export interface IEnrollment {
   canceledAt: Date;
 }
 
-export interface EnrollmentInput {
+export interface EnrollmentInput extends Document{
   courseId: string;
   status: EnrollmentEnum;
   canceledAt?: Date;
