@@ -34,7 +34,7 @@ export class UserService {
       role: UserRole.READER,
     };
 
-    return await this.repository.create(newUser);
+    return await this.repository.insert(newUser);
   }
 
   public async update(userId: string, data: UserInput) {

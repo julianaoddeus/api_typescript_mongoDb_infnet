@@ -1,5 +1,6 @@
 import { CourseInput, CourseModel, ICourse } from "../models/courses.model.js";
 
+
 export class CourseRepository {
   public async findAll(): Promise<ICourse[]> {
     return await CourseModel.find();
@@ -9,9 +10,10 @@ export class CourseRepository {
     return await CourseModel.findById(courseId);
   }
 
-  async create(course: CourseInput): Promise<ICourse | null> {
-    const newCourse = new CourseModel(course);
-    return newCourse.save();
+  async insert(course: CourseInput): Promise<string> {
+    let newCourse = new CourseModel(course);
+    newCourse = await newCourse.save();
+    return newCourse._id.toString();
   }
 
   async update(courseId: string, data: CourseInput) {

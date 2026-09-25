@@ -32,10 +32,10 @@ export class EnrollmentController extends Controller {
 
   @SuccessResponse("201", "Criar matrícula")
   @Post()
-  public async create(
+  public async insert(
     @Body() enrollment: EnrollmentInput,
   ): Promise<IEnrollment | null> {
-    return (await this.service.create(enrollment)) as unknown as IEnrollment;
+    return (await this.service.insert(enrollment)) as unknown as IEnrollment;
   }
 
   @SuccessResponse("200", "Cancelar matrícula")

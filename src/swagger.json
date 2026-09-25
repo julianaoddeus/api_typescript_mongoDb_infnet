@@ -250,7 +250,7 @@
 				"parameters": []
 			},
 			"post": {
-				"operationId": "Create",
+				"operationId": "Insert",
 				"responses": {
 					"201": {
 						"description": "Created",
@@ -376,7 +376,7 @@
 		},
 		"/enrollments": {
 			"post": {
-				"operationId": "Create",
+				"operationId": "Insert",
 				"responses": {
 					"201": {
 						"description": "Criar matrícula",
@@ -475,7 +475,7 @@
 				"parameters": []
 			},
 			"post": {
-				"operationId": "Create",
+				"operationId": "Insert",
 				"responses": {
 					"201": {
 						"description": "Created",

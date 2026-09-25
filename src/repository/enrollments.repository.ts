@@ -17,7 +17,7 @@ export class EnrollmentRepository {
      return await EnrollmentModel.find({ userId });
   }
 
-  public async input(enrollment: EnrollmentInput) {
+  public async insert(enrollment: EnrollmentInput) {
     return await EnrollmentModel.create(enrollment);
   }
 

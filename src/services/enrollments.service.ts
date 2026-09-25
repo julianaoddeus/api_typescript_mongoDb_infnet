@@ -30,8 +30,8 @@ export class EnrollmentService {
     return userEnrollment;
   }
 
-  async create(enrollment: EnrollmentInput) {
-    return await this.repository.input(enrollment);
+  async insert(enrollment: EnrollmentInput) {
+    return await this.repository.insert(enrollment);
   }
   
   async cancel(enrollmentId: string) {

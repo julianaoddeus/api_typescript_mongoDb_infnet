@@ -195,20 +195,20 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsUserController_create: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsUserController_insert: Record<string, TsoaRoute.ParameterSchema> = {
                 user: {"in":"body","name":"user","required":true,"ref":"UserInput"},
         };
         app.post('/users',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
-            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.create)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.insert)),
 
-            async function UserController_create(request: ExRequest, response: ExResponse, next: any) {
+            async function UserController_insert(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_create, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_insert, request, response });
 
                 const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
 
@@ -218,7 +218,7 @@ export function RegisterRoutes(app: Router) {
                 }
 
               await templateService.apiHandler({
-                methodName: 'create',
+                methodName: 'insert',
                 controller,
                 response,
                 next,
@@ -301,21 +301,21 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsEnrollmentController_create: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsEnrollmentController_insert: Record<string, TsoaRoute.ParameterSchema> = {
                 enrollment: {"in":"body","name":"enrollment","required":true,"ref":"EnrollmentInput"},
         };
         app.post('/enrollments',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(EnrollmentController)),
-            ...(fetchMiddlewares<RequestHandler>(EnrollmentController.prototype.create)),
+            ...(fetchMiddlewares<RequestHandler>(EnrollmentController.prototype.insert)),
 
-            async function EnrollmentController_create(request: ExRequest, response: ExResponse, next: any) {
+            async function EnrollmentController_insert(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsEnrollmentController_create, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsEnrollmentController_insert, request, response });
 
                 const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
 
@@ -325,7 +325,7 @@ export function RegisterRoutes(app: Router) {
                 }
 
               await templateService.apiHandler({
-                methodName: 'create',
+                methodName: 'insert',
                 controller,
                 response,
                 next,
@@ -480,21 +480,21 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsCourseController_create: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsCourseController_insert: Record<string, TsoaRoute.ParameterSchema> = {
                 course: {"in":"body","name":"course","required":true,"ref":"CourseInput"},
         };
         app.post('/courses',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(CourseController)),
-            ...(fetchMiddlewares<RequestHandler>(CourseController.prototype.create)),
+            ...(fetchMiddlewares<RequestHandler>(CourseController.prototype.insert)),
 
-            async function CourseController_create(request: ExRequest, response: ExResponse, next: any) {
+            async function CourseController_insert(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsCourseController_create, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsCourseController_insert, request, response });
 
                 const container: IocContainer = typeof iocContainer === 'function' ? (iocContainer as IocContainerFactory)(request) : iocContainer;
 
@@ -504,7 +504,7 @@ export function RegisterRoutes(app: Router) {
                 }
 
               await templateService.apiHandler({
-                methodName: 'create',
+                methodName: 'insert',
                 controller,
                 response,
                 next,

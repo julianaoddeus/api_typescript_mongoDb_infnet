@@ -17,7 +17,7 @@ export class CourseService {
   }
 
   async insert(course: CourseInput) {
-    return await this.repository.create(course);
+    return await this.repository.insert(course);
   }
 
   async update(courseId: string, data: CourseInput) {
