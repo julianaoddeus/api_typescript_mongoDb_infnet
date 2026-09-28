@@ -10,7 +10,6 @@ API REST para gerenciamento de cursos e matrículas, desenvolvida com Node.js, T
 - **TSOA** para geração de rotas e spec OpenAPI
 - **JWT** para autenticação
 - **Bcrypt** para hash de senhas
-- **Zod** para validação
 - **Swagger** para documentação
 - **Jest** para testes
 
