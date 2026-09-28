@@ -1,11 +1,13 @@
-# api_typescript_infnet
+# API TYPESCRIPT + MONGODB
 
-API REST para gerenciamento de cursos e matrículas, desenvolvida com Node.js, TypeScript e Express.
+API REST para gerenciamento de cursos e matrículas, desenvolvida com Node.js, TypeScript, Express e MongoDB.
 
 ## Tecnologias
 
 - **Node.js** + **TypeScript**
 - **Express 5**
+- **MongoDB** + **Mongoose**
+- **TSOA** para geração de rotas e spec OpenAPI
 - **JWT** para autenticação
 - **Bcrypt** para hash de senhas
 - **Zod** para validação
@@ -22,14 +24,18 @@ Configure o arquivo `.env` na raiz do projeto:
 
 ```env
 JWT_SECRET=<sua_chave_secreta>
+MONGODB_URI=mongodb://<usuario>:<senha>@localhost:27017/<banco>?authSource=admin
+MONGODB_DATABASE=<nome_do_banco>
+PORT=3000
 ```
 
 ## Scripts
 
 | Comando | Descrição |
 |---|---|
-| `npm start` | Inicia o servidor (porta 3000) |
-| `npm run build` | Compila o TypeScript |
+| `npm start` | Gera rotas TSOA e inicia o servidor |
+| `npm run build` | Gera rotas TSOA e compila o TypeScript |
+| `npm run tsoa` | Gera rotas e spec OpenAPI via TSOA |
 | `npm test` | Executa os testes |
 
 ## Documentação
