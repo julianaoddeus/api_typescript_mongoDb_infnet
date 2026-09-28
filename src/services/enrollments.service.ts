@@ -1,11 +1,10 @@
 import {
   EnrollmentModel,
-  type EnrollmentInput,
-  type IEnrollment,
+  type EnrollmentInput
 } from "../models/enrollment.model.js";
 import type { EnrollmentRepository } from "../repository/enrollments.repository.js";
 import { EnrollmentEnum } from "../enums/enrollment.enum.js";
-import { CourseModel } from "../models/courses.model.js";
+
 
 export class EnrollmentService {
   constructor(private repository: EnrollmentRepository) {}
