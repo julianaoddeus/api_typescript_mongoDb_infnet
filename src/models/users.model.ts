@@ -1,8 +1,8 @@
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 import type { UserRole } from "../enums/user.enum.js";
 import { userSchema } from "../schemas/user.schema.js";
 
-export interface IUser extends Document {
+export interface IUser {
   username: string;
   email: string;
   password: string;
@@ -14,7 +14,7 @@ export type LoginInput = {
   password: string;
 };
 
-export interface UserInput extends Document {
+export interface UserInput {
   username: string;
   email: string;
   password: string;

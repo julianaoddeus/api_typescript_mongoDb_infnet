@@ -62,7 +62,7 @@ const models: TsoaRoute.Models = {
             "courseId": {"dataType":"string","required":true},
             "status": {"ref":"EnrollmentEnum","required":true},
             "enrolledAt": {"dataType":"datetime","required":true},
-            "canceledAt": {"dataType":"datetime","required":true},
+            "canceledAt": {"dataType":"datetime"},
         },
         "additionalProperties": false,
     },
@@ -70,9 +70,8 @@ const models: TsoaRoute.Models = {
     "EnrollmentInput": {
         "dataType": "refObject",
         "properties": {
+            "userId": {"dataType":"string","required":true},
             "courseId": {"dataType":"string","required":true},
-            "status": {"ref":"EnrollmentEnum","required":true},
-            "canceledAt": {"dataType":"datetime"},
         },
         "additionalProperties": false,
     },

@@ -94,28 +94,23 @@
 					"userId",
 					"courseId",
 					"status",
-					"enrolledAt",
-					"canceledAt"
+					"enrolledAt"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
 			"EnrollmentInput": {
 				"properties": {
-					"courseId": {
+					"userId": {
 						"type": "string"
 					},
-					"status": {
-						"$ref": "#/components/schemas/EnrollmentEnum"
-					},
-					"canceledAt": {
-						"type": "string",
-						"format": "date-time"
+					"courseId": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"courseId",
-					"status"
+					"userId",
+					"courseId"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -257,12 +252,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"allOf": [
-										{
-											"$ref": "#/components/schemas/IUser"
-										}
-									],
-									"nullable": true
+									"type": "string"
 								}
 							}
 						}
@@ -321,12 +311,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"allOf": [
-										{
-											"$ref": "#/components/schemas/IUser"
-										}
-									],
-									"nullable": true
+									"type": "boolean"
 								}
 							}
 						}
@@ -482,7 +467,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ICourse"
+									"type": "string"
 								}
 							}
 						}

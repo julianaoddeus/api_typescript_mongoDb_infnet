@@ -1,20 +1,19 @@
-import mongoose, { Document } from "mongoose";
+import mongoose from "mongoose";
 import type { EnrollmentEnum } from "../enums/enrollment.enum.js";
 import { enrollmentSchema } from "../schemas/enrollment.schema.js";
 
-export interface IEnrollment extends Document{
+export interface IEnrollment {
   id: string;
   userId: string;
   courseId: string;
   status: EnrollmentEnum;
   enrolledAt: Date;
-  canceledAt: Date;
+  canceledAt?: Date;
 }
 
-export interface EnrollmentInput extends Document{
+export interface EnrollmentInput {
+  userId: string;
   courseId: string;
-  status: EnrollmentEnum;
-  canceledAt?: Date;
 }
 
 export const EnrollmentModel = mongoose.model<IEnrollment>(

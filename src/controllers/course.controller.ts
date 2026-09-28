@@ -20,7 +20,6 @@ import type { CourseInput, ICourse } from "../models/courses.model.js";
 import { UserRole } from "../enums/user.enum.js";
 @Route("courses")
 @Security("jwt")
-@Middlewares(requireAuth, requireRole(UserRole.ADMIN))
 export class CourseController extends Controller {
   constructor(
     private service: CourseService,
@@ -30,12 +29,20 @@ export class CourseController extends Controller {
   }
 
   @SuccessResponse("200", "Ok")
+  @Middlewares(
+    requireAuth,
+    requireRole(UserRole.ADMIN, UserRole.MODERATOR, UserRole.READER),
+  )
   @Get()
   public async getAll() {
     return await this.service.findAll();
   }
 
   @SuccessResponse("200", "Ok")
+  @Middlewares(
+    requireAuth,
+    requireRole(UserRole.ADMIN, UserRole.MODERATOR, UserRole.READER),
+  )
   @Get("enrollments/{userId}")
   public async getCourseWithEnrollment(@Path() userId: string) {
     const enrollments = await this.enrollmentService.findByUser(userId);
@@ -43,25 +50,31 @@ export class CourseController extends Controller {
     const courses = await this.service.findAll();
 
     const coursesWithEnrollments = enrollments.map((enrollment) => {
-      return courses.find((course) => course.id === enrollment.courseId);
+      return courses.find((course) => course.id === enrollment.courseId.toString());
     });
 
     return coursesWithEnrollments;
   }
 
   @SuccessResponse("200", "Ok")
+  @Middlewares(
+    requireAuth,
+    requireRole(UserRole.ADMIN, UserRole.MODERATOR, UserRole.READER),
+  )
   @Get("{courseId}")
   public async getOne(@Path() courseId: string) {
     return await this.service.findOne(courseId);
   }
 
   @SuccessResponse("201", "Created")
+  @Middlewares(requireAuth, requireRole(UserRole.ADMIN))
   @Post()
   public async insert(@Body() course: CourseInput): Promise<string> {
     return await this.service.insert(course);
   }
 
   @SuccessResponse("200", "Ok")
+  @Middlewares(requireAuth, requireRole(UserRole.ADMIN))
   @Put("{courseId}")
   public async update(
     @Path() courseId: string,
@@ -71,6 +84,7 @@ export class CourseController extends Controller {
   }
 
   @SuccessResponse("204", "No Content")
+  @Middlewares(requireAuth, requireRole(UserRole.ADMIN))
   @Delete("{courseId}")
   public async delete(@Path() courseId: string): Promise<void> {
     await this.service.delete(courseId);

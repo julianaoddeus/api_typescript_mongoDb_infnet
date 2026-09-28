@@ -17,7 +17,7 @@ app.use(logger);
 // Rotas geradas pelo tsoa
 RegisterRoutes(app);
 
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use("/docs", ...swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(errorHandler);
 

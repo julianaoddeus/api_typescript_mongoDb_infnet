@@ -1,25 +1,14 @@
-import type {
-  EnrollmentInput,
-  IEnrollment,
+import {
+  EnrollmentModel,
+  type EnrollmentInput,
+  type IEnrollment,
 } from "../models/enrollment.model.js";
 import type { EnrollmentRepository } from "../repository/enrollments.repository.js";
 import { EnrollmentEnum } from "../enums/enrollment.enum.js";
+import { CourseModel } from "../models/courses.model.js";
 
 export class EnrollmentService {
   constructor(private repository: EnrollmentRepository) {}
-
-  async findAll() {
-    return await this.repository.findAll();
-  }
-
-  async findOne(enrollmentId: string) {
-    const enrollment = await this.repository.findOne(enrollmentId);
-
-    if (!enrollment)
-      throw { status: 404, message: "Matrícula não encontrada." };
-
-    return enrollment;
-  }
 
   async findByUser(userId: string) {
     const userEnrollment = await this.repository.findByUser(userId);
@@ -31,11 +20,15 @@ export class EnrollmentService {
   }
 
   async insert(enrollment: EnrollmentInput) {
-    return await this.repository.insert(enrollment);
+    return await this.repository.insert({
+      ...enrollment,
+      status: EnrollmentEnum.ACTIVE,
+      enrolledAt: new Date(),
+    } as unknown as EnrollmentInput);
   }
-  
+
   async cancel(enrollmentId: string) {
-    const enrollment = await this.repository.findOne(enrollmentId);
+    const enrollment = await EnrollmentModel.findById(enrollmentId);
 
     if (!enrollment)
       throw { status: 404, message: "Matrícula não encontrada." };

@@ -11,10 +11,10 @@ export class EnrollmentRepository {
 
   public async insert(enrollment: EnrollmentInput) {
     const newEnrollment = new EnrollmentModel(enrollment);
-     newEnrollment.save();
+    return await newEnrollment.save();
   }
 
-  public async cancel(enrollmentId: string, data: Partial<EnrollmentInput>) {
+  public async update(enrollmentId: string, data: Partial<EnrollmentInput>) {
     return await EnrollmentModel.findByIdAndUpdate(enrollmentId, data, {
       new: true,
     });
