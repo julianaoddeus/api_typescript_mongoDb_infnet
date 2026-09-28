@@ -23,7 +23,7 @@ export class UserRepository {
   }
 
   public async update(userId: string, data: UserInput): Promise<boolean> {
-    const userUpdate = await UserModel.updateOne({ _id: userId }, { data });
+    const userUpdate = await UserModel.updateOne({ _id: userId }, { $set: data });
 
     return userUpdate?.modifiedCount > 0;
   }

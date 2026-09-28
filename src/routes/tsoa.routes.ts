@@ -198,6 +198,7 @@ export function RegisterRoutes(app: Router) {
                 user: {"in":"body","name":"user","required":true,"ref":"UserInput"},
         };
         app.post('/users',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.insert)),
 
@@ -234,6 +235,7 @@ export function RegisterRoutes(app: Router) {
                 data: {"in":"body","name":"data","required":true,"ref":"UserInput"},
         };
         app.put('/users/:userId',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.update)),
 
@@ -269,6 +271,7 @@ export function RegisterRoutes(app: Router) {
                 userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
         };
         app.delete('/users/:userId',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.delete)),
 

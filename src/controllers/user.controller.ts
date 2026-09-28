@@ -16,7 +16,7 @@ import { requireAuth } from "../middlewares/require-auth.middleware.js";
 import { UserRole } from "../enums/user.enum.js";
 import { requireRole } from "../middlewares/role.middleware.js";
 import type { IUser, UserInput } from "../models/users.model.js";
-
+@Security("jwt")
 @Route("users")
 export class UserController extends Controller {
   constructor(private service: UserService) {
@@ -24,7 +24,6 @@ export class UserController extends Controller {
   }
 
   @SuccessResponse("200", "Ok")
-  @Security("jwt")
   @Middlewares(requireAuth, requireRole(UserRole.ADMIN))
   @Get()
   public async getAll() {
@@ -32,7 +31,6 @@ export class UserController extends Controller {
   }
 
   @SuccessResponse("200", "Ok")
-  @Security("jwt")
   @Middlewares(requireAuth, requireRole(UserRole.ADMIN))
   @Get("{userId}")
   public async getOne(@Path() userId: string) {
